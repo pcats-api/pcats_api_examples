@@ -17,7 +17,7 @@ jobid=pcats_api.dynamicgp(datafile="../data/example3.csv",
                       mcmc_num=500,
                       stg1_tr_type = 'Discrete',
                       stg2_tr_type = 'Discrete',
-                      method='BART')
+                      method='GP')
 
 print("JobID: {}".format(jobid))
 

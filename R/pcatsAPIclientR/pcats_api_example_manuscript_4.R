@@ -2,19 +2,28 @@ library(pcatsAPIclientR)
 
 #example 4
 
-jobid <- pcatsAPIclientR::staticGP(datafile="example4.csv",
-                   outcome="Y",
-                   treatment="A,Z",
-                   x.explanatory="X",
-                   x.confounding="X",
-                   tr.hte="Gender",
-                   tr.type="Discrete",
-                   tr2.values="-1,0,1",
-                   tr2.type="Continuous",
-                   burn.num=500, mcmc.num=500,
-                   outcome.type="Continuous",
-                   method="GP",
-                   x.categorical='Gender'
+jobid <- pcatsAPIclientR::dynamicGP(datafile="../../data/example4.csv",
+
+                      stg1.outcome='L1',
+                      stg1.treatment='A1',
+                      stg1.x.explanatory='X,M',
+                      stg1.x.confounding='X,M',
+                      stg1.outcome.type='Continuous',
+                      stg1.tr.hte="M",   
+                      stg1.tr.type = 'Discrete',
+
+                      stg2.outcome='Y',
+                      stg2.treatment='A2',
+                      stg2.x.explanatory='X,L1,M',
+                      stg2.x.confounding='X,L1,M',
+                      stg2.outcome.type='Continuous', 
+                      stg2.tr.hte="M",     
+                      stg2.tr.type = 'Discrete',
+
+                      burn.num=500,
+                      mcmc.num=500,
+                      x.categorical="M",
+                      method='GP'
                    )
 
 cat(paste0("JobID: ",jobid,"\n"))
@@ -25,20 +34,18 @@ if (status=="Done") {
    cat(pcatsAPIclientR::print(jobid))
 }
 
-# example 4 CATE
+# CATE
+jobidcate <- pcatsAPIclientR::dynamicGP.cate(
+               jobid=jobid,
+               x="M",
+               control.tr="0,0",
+               treat.tr="1,0")
 
-jobidcate <- pcatsAPIclientR::staticGP.cate(jobid=jobid,
-                   x="Gender",
-                   control.tr="0,0",
-                   treat.tr="1,0",
-                   pr.values="0"
-                   )
-
-cat(paste0("JobID cate: ",jobidcate,"\n"))
+cat(paste0("JobIDCate: ",jobidcate,"\n"))
 
 status <- pcatsAPIclientR::wait_for_result(jobidcate)
 
 if (status=="Done") {
-   cat(pcatsAPIclientR::print(jobidcate))
+  cat(pcatsAPIclientR::print(jobidcate))
 }
 

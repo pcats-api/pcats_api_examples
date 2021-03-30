@@ -1,22 +1,19 @@
 #!/bin/bash
 
-jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/dynamicgp" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" \
-       -F "data=@example6.csv;type=text/csv" \
-       -F "stg1.outcome=L1" \
-       -F "stg1.treatment=A1" \
-       -F "stg1.x.explanatory=X" \
-       -F "stg1.x.confounding=X" \
-       -F "stg1.outcome_type=Continuous" \
-       -F "stg2.outcome=Y" \
-       -F "stg2.treatment=A2" \
-       -F "stg2.x.explanatory=X,L1" \
-       -F "stg2.x.confounding=X,L1" \
-       -F "stg2.outcome.type=Continuous" \
+jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/staticgp" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" \
+       -F "data=@../data/example6.csv;type=text/csv" \
+       -F "outcome=Y" \
+       -F "treatment=A" \
+       -F "x.explanatory=X" \
+       -F "x.confounding=X" \
        -F "burn.num=500" \
        -F "mcmc.num=500" \
-       -F "stg1.tr.type=Discrete" \
-       -F "stg2.tr.type=Discrete" \
-       -F "method=BART" | jq -r .jobid`
+       -F "outcome.type=Continuous" \
+       -F "tr.type=Discrete" \
+       -F "outcome.lb=0" \
+       -F "outcome.ub=inf" \
+       -F "outcome.bound_censor=bounded" \
+       -F "method=GP" | jq -r .jobid`
 
 echo "JobID: $jobid"
 

@@ -20,7 +20,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/dynamicgp',
                       mcmc.num=500,
                       stg1.tr.type = 'Discrete',
                       stg2.tr.type = 'Discrete',
-                      method='BART'))
+                      method='GP'))
 
 cont <- content(res)
 jobid <- cont$jobid

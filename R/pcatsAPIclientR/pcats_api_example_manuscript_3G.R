@@ -1,26 +1,23 @@
 library(pcatsAPIclientR)
 
-#example 5
+#example 3
 
-jobid <- pcatsAPIclientR::dynamicGP(datafile="../../data/example5.csv",
-
+jobid <- pcatsAPIclientR::dynamicGP(datafile="../../data/example3.csv",
                       stg1.outcome='L1',
                       stg1.treatment='A1',
-                      stg1.x.explanatory='U0',
-                      stg1.x.confounding='U0',
-                      stg1.outcome.type='Discrete',
-                      stg1.tr.type = 'Discrete',
-
+                      stg1.x.explanatory='X',
+                      stg1.x.confounding='X',
+                      stg1.outcome.type='Continuous',
                       stg2.outcome='Y',
                       stg2.treatment='A2',
-                      stg2.x.explanatory='U0,L1',
-                      stg2.x.confounding='U0,L1',
+                      stg2.x.explanatory='X,L1',
+                      stg2.x.confounding='X,L1',
                       stg2.outcome.type='Continuous', 
-                      stg2.tr.type = 'Discrete',
-
                       burn.num=500,
                       mcmc.num=500,
-                      method='BART'
+                      stg1.tr.type = 'Discrete',
+                      stg2.tr.type = 'Discrete',
+                      method='GP'
                    )
 
 cat(paste0("JobID: ",jobid,"\n"))

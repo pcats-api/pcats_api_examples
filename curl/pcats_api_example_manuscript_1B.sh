@@ -1,19 +1,11 @@
 #!/bin/bash
 
 jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/staticgp" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" \
-       -F "data=@../data/example7.csv;type=text/csv" \
-       -F "outcome=Y" \
-       -F "treatment=A" \
-       -F "x.explanatory=X" \
-       -F "x.confounding=X" \
-       -F "burn.num=500" \
-       -F "mcmc.num=500" \
+       -F "data=@../data/example1.csv;type=text/csv" -F "outcome=Y" -F "treatment=A" \
+       -F "x.confounding=X" -F "x.explanatory=X"  \
+       -F "mcmc.num=500" -F "burn.num=500" \
        -F "outcome.type=Continuous" \
-       -F "outcome.censor.lv=lv" \
-       -F "outcome.censor.uv=uv" \
-       -F "outcome.bound_censor=censored" \
-       -F "outcome.censor.yn=censor" \
-       -F "method=GP" | jq -r .jobid`
+       -F "method=BART" -F "tr.type=Discrete" | jq -r .jobid`
 
 echo "JobID: $jobid"
 

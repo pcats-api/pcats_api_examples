@@ -1,22 +1,17 @@
 #!/bin/bash
 
-jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/dynamicgp" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" \
-       -F "data=@example8.csv;type=text/csv" \
-       -F "stg1.outcome=L1" \
-       -F "stg1.treatment=A1" \
-       -F "stg1.x.explanatory=U0" \
-       -F "stg1.x.confounding=U0" \
-       -F "stg1.outcome.type=Discrete" \
-       -F "stg1.tr.type=Discrete" \
-       -F "stg2.outcome=Y" \
-       -F "stg2.treatment=A2" \
-       -F "stg2.x.explanatory=U0,L1" \
-       -F "stg2.x.confounding=U0,L1" \
-       -F "stg2.outcome.type=Continuous" \
-       -F "stg2.tr.type=Discrete" \
+jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/staticgp" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" \
+       -F "data=@../data/example8.csv;type=text/csv" \
+       -F "outcome=Y" \
+       -F "treatment=A" \
+       -F "x.explanatory=X" \
+       -F "x.confounding=X" \
        -F "burn.num=500" \
        -F "mcmc.num=500" \
-       -F "method=BART" | jq -r .jobid`
+       -F "outcome.type=Continuous" \
+       -F "tr.type=Discrete" \
+       -F "mi.data=@../data/example8_midata.csv;type=text/csv" \
+       -F "method=GP" | jq -r .jobid`
 
 echo "JobID: $jobid"
 
@@ -34,4 +29,3 @@ if [ "$status" == "Done" ] ; then
 else
    echo "Unexpected status is $status" 
 fi
-

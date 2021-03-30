@@ -1,19 +1,22 @@
 library(httr)
 
-#example 1
+#example 6
 
 res <- POST(url='https://pcats.research.cchmc.org/api/staticgp',
             encode='multipart',
-            body=list(data=upload_file("../../data/example1.csv"),
+            body=list(data=upload_file("../../data/example6.csv"),
                    outcome="Y",
                    treatment="A",
                    x.explanatory="X",
                    x.confounding="X",
                    burn.num=500, mcmc.num=500,
                    outcome.type="Continuous",
-                   method="GP",
+                   method="BART",
                    tr.type="Discrete",
-                   pr.values="0,1,2"))
+                   outcome.lb=0,
+                   outcome.ub="inf",
+                   outcome.bound_censor='bounded'
+                   ))
 cont <- content(res)
 jobid <- cont$jobid
 

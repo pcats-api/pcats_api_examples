@@ -10,7 +10,7 @@ jobid=pcats_api.staticgp(datafile="../data/example1.csv",
                       burn_num=500,
                       mcmc_num=500,
                       outcome_type='Continuous',
-                      method='GP',
+                      method='BART',
                       tr_type='Discrete',
                       pr_values='0,1,2')
 

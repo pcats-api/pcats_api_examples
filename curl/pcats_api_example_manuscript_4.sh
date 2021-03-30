@@ -1,19 +1,24 @@
 #!/bin/bash
 
-jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/staticgp" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" \
-       -F "data=@example4.csv;type=text/csv" \
-       -F "outcome=Y" \
-       -F "treatment=A,Z" \
-       -F "x.explanatory=X" \
-       -F "x.confounding=X" \
-       -F "tr.hte=Gender" \
-       -F "tr.type=Discrete" \
-       -F "tr2.values=-1,0,1" \
-       -F "tr2.type=Continuous" \
+jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/dynamicgp" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" \
+       -F "data=@../data/example4.csv;type=text/csv" \
+       -F "stg1.outcome=L1" \
+       -F "stg1.treatment=A1" \
+       -F "stg1.x.explanatory=X,M" \
+       -F "stg1.x.confounding=X,M" \
+       -F "stg1.outcome_type=Continuous" \
+       -F "stg1.tr.hte=M" \
+       -F "stg2.outcome=Y" \
+       -F "stg2.treatment=A2" \
+       -F "stg2.x.explanatory=X,L1,M" \
+       -F "stg2.x.confounding=X,L1,M" \
+       -F "stg2.outcome.type=Continuous" \
+       -F "stg2.tr.hte=M" \
        -F "burn.num=500" \
        -F "mcmc.num=500" \
-       -F "outcome.type=Continuous" \
-       -F "x.categorical=Gender" \
+       -F "stg1.tr.type=Discrete" \
+       -F "stg2.tr.type=Discrete" \
+       -F "x.categorical=M" \
        -F "method=GP" | jq -r .jobid`
 
 echo "JobID: $jobid"
@@ -34,11 +39,10 @@ else
 fi
 
 # CATE
-jobidcate=`curl -s -X POST "https://pcats.research.cchmc.org/api/job/$jobid/staticgp.cate" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" \
-       -F "x=Gender" \
+jobidcate=`curl -s -X POST "https://pcats.research.cchmc.org/api/job/$jobid/dynamicgp.cate" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" \
+       -F "x=M" \
        -F "control.tr=0,0" \
-       -F "treat.tr=1,0" \
-       -F "pr.values=0" | jq -r .jobid`
+       -F "treat.tr=1,0" | jq -r .jobid`
 
 echo "JobIDcate: $jobidcate"
 

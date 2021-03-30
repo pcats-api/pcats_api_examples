@@ -11,7 +11,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/staticgp',
                    x.confounding="X",
                    burn.num=500, mcmc.num=500,
                    outcome.type="Continuous",
-                   method="GP",
+                   method="BART",
                    tr.type="Discrete",
                    pr.values="0,1,2"))
 cont <- content(res)
