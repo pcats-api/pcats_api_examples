@@ -10,10 +10,6 @@ jobid=pcats_api.staticgp(datafile="../data/example6.csv",
                          burn_num=500,
                          mcmc_num=500,
                          outcome_type='Continuous',
-                         tr_type='Discrete',
-                         outcome_lb=0,
-                         outcome_ub="inf",
-                         outcome_bound_censor='bounded',
                          method='BART')
 
 print("JobID: {}".format(jobid))
