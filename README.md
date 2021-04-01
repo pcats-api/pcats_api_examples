@@ -33,7 +33,7 @@ A | X ~ Bernoulli(expit(-0.2+3 X ))
 Y | A,X ~ N(X+5 A,1)
 ```
 
-The simulated data can be downloaded from …….  The **staticGP** function is used to estimate ATE for non-adaptive treatment. Since the outcome Y is continuous, *outcome.type* is set to ``Continuous``. If Y is binary or counting outcome, outcome.type should be set to ``Discrete``. Similarly, tr.type gives the type of the treatment. In this example, the treatment A is a binary indicator variable, tr.type is set to ``Discrete``. x.explanatory specifies the prognostic variables **W** and x.confounding specifies the confounders **V**. The categorical variables in **W** and **V** should be specified in x.categorical. Users can define a link function by outcome.link. The default value of outcome.link is ``identity``. The number of burn-in Gibbs samples (burn.num) is set to be 500 and number of Gibbs samples after burn-in (mcmc.num) is 500.  The default numbers are 1000 for burn-in and 1000 for Gibbs sampling. 
+The **staticGP** function is used to estimate ATE for non-adaptive treatment. Since the outcome Y is continuous, *outcome.type* is set to ``Continuous``. If Y is binary or counting outcome, outcome.type should be set to ``Discrete``. Similarly, tr.type gives the type of the treatment. In this example, the treatment A is a binary indicator variable, tr.type is set to ``Discrete``. x.explanatory specifies the prognostic variables **W** and x.confounding specifies the confounders **V**. The categorical variables in **W** and **V** should be specified in x.categorical. Users can define a link function by outcome.link. The default value of outcome.link is ``identity``. The number of burn-in Gibbs samples (burn.num) is set to be 500 and number of Gibbs samples after burn-in (mcmc.num) is 500. The default numbers are 500 for burn-in and 500 for Gibbs sampling. 
 
 By default, the estimates of averaged treatment effect and potential outcomes are reported. Two methods, GP and BART, are available for users to choose. For a continuous outcome, users can choose either one. Please note that the time cost associated with the model fit increases sharply for GP method, thus it can be challenging with a large sample size. For a discrete outcome, only BART method is available currently.
 
@@ -43,6 +43,10 @@ There are three steps in calling PCATS API. The first step makes the actual requ
 
 ```R
 library(pcatsAPIclientR)
+
+#download the data
+download.file("https://github.com/pcats-api/pcats_api_examples/raw/main/data/example1.csv", destfile="example1.csv")
+
 #Step 1. Submit the actual request
 jobid <- pcatsAPIclientR::staticGP(datafile="example1.csv",
                       outcome="Y",
@@ -92,7 +96,13 @@ if (status=="Done") {
 ** Python code:**
 ```python
 import pcats_api_client as pcats_api
+import requests
 
+r = requests.get("https://github.com/pcats-api/pcats_api_examples/raw/main/data/example1.csv")
+
+with open("example1.csv", 'wb') as f:
+    f.write(r.content)
+    
 jobid=pcats_api.staticgp(datafile="example1.csv",
                       outcome='Y',
                       treatment='A',
@@ -123,11 +133,14 @@ A_2  | L_1,A_1,X ~ Bernoulli(expit(-0.2-0.38A_1+L_1  ))
 Y | A_1,X,L_1,A_2  ~ N(-2+2.5A_1+3.5A_2+0.5A_1  A_2-0.6L_1,sd=2)
 ```
 
-The simulated data can be downloaded from …….   The R code and Python code are shown below:
+The R code and Python code are shown below:
 
 **R code:**
 ```R
 library(pcatsAPIclientR)
+
+download.file("https://github.com/pcats-api/pcats_api_examples/raw/main/data/example3.csv", destfile="example3.csv")
+
 jobid <- pcatsAPIclientR::dynamicGP(
             datafile='example3.csv',
             stg1.outcome='L1',
@@ -189,7 +202,13 @@ if (status=="Done") {
 **Python code:**
 ```python
 import  pcats_api_client  as  pcats_api
+import requests
 
+r = requests.get("https://github.com/pcats-api/pcats_api_examples/raw/main/data/example3.csv")
+
+with open("example3.csv", 'wb') as f:
+    f.write(r.content)
+    
 jobid=pcats_api.dynamicgp(datafile="example3.csv", 
                       stg1_outcome='L1',
                       stg1_treatment='A1',
