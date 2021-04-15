@@ -17,7 +17,7 @@ jobid <- pcatsAPIclientR::dynamicGP(datafile="../../data/example4.csv",
                       stg2.x.explanatory='X,L1,M',
                       stg2.x.confounding='X,L1,M',
                       stg2.outcome.type='Continuous', 
-                      stg2.tr.hte="M",     
+                      stg2.tr2.hte="M",     
                       stg2.tr.type = 'Discrete',
 
                       burn.num=500,
