@@ -21,7 +21,7 @@ devtools::install_github("pcats-api/pcatsAPIclientR")
 
 The Python PCATS REST API abstraction library is also available on github. In order to install it please run:
 
-`python -m pip install git+https://github.com/pcats-api/pcats_api_client_py.git`
+`python -m pip install pcats_api_client`
 
 ## Example
 ### Non-adaptive treatment
