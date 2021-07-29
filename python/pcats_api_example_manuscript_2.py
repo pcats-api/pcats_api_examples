@@ -22,7 +22,7 @@ print("JobID: {}".format(jobid))
 status = pcats_api.wait_for_result(jobid)
 
 if status=="Done":
-    print(pcats_api.print(jobid))
+    print(pcats_api.printgp(jobid))
 else:
     print("Error")
     exit()
@@ -40,6 +40,6 @@ print("CATE JobID: {}".format(jobid_cate))
 status = pcats_api.wait_for_result(jobid_cate)
 
 if status=="Done":
-    print(pcats_api.print(jobid_cate))
+    print(pcats_api.printgp(jobid_cate))
 else:
     print("Error")
