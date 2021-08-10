@@ -10,7 +10,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/dynamicgp',
                       stg1.treatment='A1',
                       stg1.x.explanatory='X,M',
                       stg1.x.confounding='X,M',
-                      stg1.outcome_type='Continuous',
+                      stg1.outcome.type='Continuous',
                       stg1.tr.hte="M",   
                       stg2.outcome='Y',
                       stg2.treatment='A2',
@@ -23,6 +23,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/dynamicgp',
                       stg1.tr.type = 'Discrete',
                       stg2.tr.type = 'Discrete',
                       x.categorical="M",
+                      seed="5000",
                       method='GP'))
 
 cont <- content(res)
@@ -52,7 +53,7 @@ while (TRUE)
 
 rescate <- POST(url=paste0('https://pcats.research.cchmc.org/api/job/',jobid,'/dynamicgp.cate'),
             encode='multipart',
-            body=list(jobid=jobid,
+            body=list(dynamicgp.jobid=jobid,
                    x="M",
                    control.tr="0,0",
                    treat.tr="1,0"

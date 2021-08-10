@@ -10,7 +10,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/dynamicgp',
                       stg1.treatment='A1',
                       stg1.x.explanatory='X',
                       stg1.x.confounding='X',
-                      stg1.outcome_type='Continuous',
+                      stg1.outcome.type='Continuous',
                       stg2.outcome='Y',
                       stg2.treatment='A2',
                       stg2.x.explanatory='X,L1',
@@ -20,6 +20,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/dynamicgp',
                       mcmc.num=500,
                       stg1.tr.type = 'Discrete',
                       stg2.tr.type = 'Discrete',
+                      seed="5000",
                       method='BART'))
 
 cont <- content(res)

@@ -5,6 +5,8 @@ jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/staticgp" -H  "acce
        -F "x.confounding=X" -F "x.explanatory=X"  \
        -F "mcmc.num=500" -F "burn.num=500" \
        -F "outcome.type=Continuous" \
+       -F "seed=5000" \
+       -F "pr.values=0,1,2" \
        -F "method=GP" -F "tr.type=Discrete" | jq -r .jobid`
 
 echo "JobID: $jobid"

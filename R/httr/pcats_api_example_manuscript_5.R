@@ -22,6 +22,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/dynamicgp',
 
                       burn.num=500,
                       mcmc.num=500,
+                      seed="5000",
                       method='BART'))
 
 cont <- content(res)

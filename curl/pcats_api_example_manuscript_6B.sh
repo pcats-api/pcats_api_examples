@@ -8,11 +8,8 @@ jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/staticgp" -H  "acce
        -F "x.confounding=X" \
        -F "burn.num=500" \
        -F "mcmc.num=500" \
+       -F "seed=5000" \
        -F "outcome.type=Continuous" \
-       -F "tr.type=Discrete" \
-       -F "outcome.lb=0" \
-       -F "outcome.ub=inf" \
-       -F "outcome.bound_censor=bounded" \
        -F "method=BART" | jq -r .jobid`
 
 echo "JobID: $jobid"

@@ -15,6 +15,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/staticgp',
                    tr.type="Discrete",
                    outcome.lb=0,
                    outcome.ub="inf",
+                   seed="5000",
                    outcome.bound_censor='bounded'
                    ))
 cont <- content(res)

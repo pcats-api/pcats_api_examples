@@ -8,6 +8,7 @@ jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/staticgp" -H  "acce
        -F "x.confounding=X" \
        -F "burn.num=500" \
        -F "mcmc.num=500" \
+       -F "seed=5000" \
        -F "outcome.type=Continuous" \
        -F "tr.type=Discrete" \
        -F "mi.data=@../data/example8_midata.csv;type=text/csv" \

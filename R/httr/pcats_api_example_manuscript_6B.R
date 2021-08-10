@@ -12,10 +12,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/staticgp',
                    burn.num=500, mcmc.num=500,
                    outcome.type="Continuous",
                    method="BART",
-                   tr.type="Discrete",
-                   outcome.lb=0,
-                   outcome.ub="inf",
-                   outcome.bound_censor='bounded'
+                   seed="5000"
                    ))
 cont <- content(res)
 jobid <- cont$jobid

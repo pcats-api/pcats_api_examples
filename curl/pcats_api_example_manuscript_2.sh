@@ -12,6 +12,7 @@ jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/staticgp" -H  "acce
        -F "tr2.type=Continuous" \
        -F "burn.num=500" \
        -F "mcmc.num=500" \
+       -F "seed=5000" \
        -F "outcome.type=Continuous" \
        -F "x.categorical=Gender" \
        -F "method=GP" | jq -r .jobid`

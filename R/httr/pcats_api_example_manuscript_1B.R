@@ -13,6 +13,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/staticgp',
                    outcome.type="Continuous",
                    method="BART",
                    tr.type="Discrete",
+                   seed="5000",
                    pr.values="0,1,2"))
 cont <- content(res)
 jobid <- cont$jobid

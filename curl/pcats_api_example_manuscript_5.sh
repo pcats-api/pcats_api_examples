@@ -16,6 +16,7 @@ jobid=`curl -s -X POST "https://pcats.research.cchmc.org/api/dynamicgp" -H  "acc
        -F "stg2.tr.type=Discrete" \
        -F "burn.num=500" \
        -F "mcmc.num=500" \
+       -F "seed=5000" \
        -F "method=BART" | jq -r .jobid`
 
 echo "JobID: $jobid"

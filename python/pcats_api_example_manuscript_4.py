@@ -30,3 +30,20 @@ if status=="Done":
     print(pcats_api.printgp(jobid))
 else:
     print("Error")
+    exit()
+
+#example 4 CATE
+
+jobid_cate=pcats_api.dynamicgp_cate(jobid=jobid,
+                              x="M",
+                              control_tr="0,0",
+                              treat_tr="1,0")
+
+print("CATE JobID: {}".format(jobid_cate))
+
+status = pcats_api.wait_for_result(jobid_cate)
+
+if status=="Done":
+    print(pcats_api.printgp(jobid_cate))
+else:
+    print("Error")

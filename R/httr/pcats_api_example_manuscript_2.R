@@ -16,6 +16,7 @@ res <- POST(url='https://pcats.research.cchmc.org/api/staticgp',
                    burn.num=500, mcmc.num=500,
                    outcome.type="Continuous",
                    method="GP",
+                   seed="5000",
                    x.categorical='Gender'
                    ))
 cont <- content(res)
@@ -45,7 +46,7 @@ while (TRUE)
 
 rescate <- POST(url=paste0('https://pcats.research.cchmc.org/api/job/',jobid,'/staticgp.cate'),
             encode='multipart',
-            body=list(jobid=jobid,
+            body=list(staticgp.jobid=jobid,
                    x="Gender",
                    control.tr="0,0",
                    treat.tr="1,0",
