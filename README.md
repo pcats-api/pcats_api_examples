@@ -78,13 +78,13 @@ if (status=="Done") {
 # The first table shows the estimated ATE with SD and the 95% confidence interval.
 #>Average treatment effect:
 #> Contrast Estimation    SD     LB     UB
-#>    0 - 1     -5.048 0.198 -5.422 -4.654
+#>    0 - 1     -5.048 0.198 -5.415 -4.662
 
 # The second table presents the estimated average potential outcomes by treatment groups. It reports that the expected mean and its standard error for the potential outcomes.
 #>Potential outcomes:
 #> A Estimation    SD     LB    UB
-#> 0     -0.122 0.090 -0.297 0.048
-#> 1      4.926 0.111  4.705 5.143
+#> 0     -0.122 0.089 -0.296 0.052
+#> 1      4.926 0.112  4.708 5.140
 
 # It’s the link of the histograms of MCMC posterior estimates of ATE
 #> Plot URL:  https://pcats.research.cchmc.org/api/job/e2db813e-89a2-4a35-bfa3-d34b5b2b0d0d/plot
@@ -167,30 +167,30 @@ if (status=="Done") {
 #> Stage 1:
 #> Average treatment effect:
 #>  Contrast Estimation    SD     LB     UB
-#>     0 - 1     -0.435 0.148 -0.732 -0.146
+#>     0 - 1     -0.435 0.149 -0.743 -0.162
 
 #> Potential outcomes:
 #>  A1 Estimation    SD     LB    UB
-#>   0      0.067 0.083 -0.107 0.221
-#>   1      0.503 0.069  0.382 0.660
+#>   0      0.068 0.083 -0.106 0.220
+#>   1      0.502 0.070  0.365 0.637
 
 # Stage 2 shows the results of the second time point
 #> Stage 2:
 #> Average treatment effect:
  #>    Contrast Estimation    SD     LB     UB
-#>  0, 0 - 0, 1     -3.743 0.472 -4.664 -2.824
-#>  0, 0 - 1, 0     -2.668 0.426 -3.467 -1.831
-#>  0, 0 - 1, 1     -6.849 0.449 -7.712 -5.980
-#>  0, 1 - 1, 0      1.075 0.494  0.217  2.147
-#>  0, 1 - 1, 1     -3.106 0.463 -3.977 -2.206
-#>  1, 0 - 1, 1     -4.181 0.424 -5.050 -3.387
+#>  0, 0 - 0, 1     -3.787 0.468 -4.635 -2.821
+#>  0, 0 - 1, 0     -2.702 0.428 -3.494 -1.849
+#>  0, 0 - 1, 1     -6.893 0.421 -7.640 -6.075
+#>  0, 1 - 1, 0      1.085 0.523  0.127  2.064
+#>  0, 1 - 1, 1     -3.106 0.472 -3.985 -2.153
+#>  1, 0 - 1, 1     -4.191 0.427 -4.976 -3.290
 
 #> Potential outcomes:
 #>  A1 A2 Estimation    SD     LB     UB
-#>   0  0     -2.396 0.294 -2.902 -1.768
-#>   0  1      1.347 0.346  0.707  2.078
-#>   1  0      0.272 0.273 -0.230  0.798
-#>   1  1      4.453 0.236  4.015  4.907
+#>   0  0     -2.426 0.279 -2.915 -1.826
+#>   0  1      1.360 0.358  0.625  2.035
+#>   1  0      0.276 0.285 -0.323  0.795
+#>   1  1      4.467 0.228  4.043  4.937
 
 # It’s the link of the histograms of MCMC posterior estimates of ATE
 #> Plot URL:  https://pcats.research.cchmc.org/api/job/3bf0e733-a381-4525-9a5a-5c8552b634e2/plot
@@ -228,5 +228,5 @@ jobid=pcats_api.dynamicgp(datafile="example3.csv",
 status = pcats_api.wait_for_result(jobid)
 
 if  status =="Done":
-  print(pcats_api.print(jobid))
+  print(pcats_api.printgp(jobid))
 ```
