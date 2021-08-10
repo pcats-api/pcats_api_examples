@@ -118,7 +118,7 @@ jobid=pcats_api.staticgp(datafile="example1.csv",
 status = pcats_api.wait_for_result(jobid)
 
 if status=="Done":
-    print(pcats_api.print(jobid))
+    print(pcats_api.printgp(jobid))
 ```
 
 ### Adaptive treatment
