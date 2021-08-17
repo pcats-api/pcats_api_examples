@@ -25,6 +25,6 @@ cat(paste0("JobID: ",jobid,"\n"))
 status <- pcatsAPIclientR::wait_for_result(jobid)
 
 if (status=="Done") {
-   cat(pcatsAPIclientR::print(jobid))
+   cat(pcatsAPIclientR::printgp(jobid))
 }
 

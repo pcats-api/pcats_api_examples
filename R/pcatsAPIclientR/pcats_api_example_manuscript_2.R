@@ -22,7 +22,7 @@ cat(paste0("JobID: ",jobid,"\n"))
 status <- pcatsAPIclientR::wait_for_result(jobid)
 
 if (status=="Done") {
-   cat(pcatsAPIclientR::print(jobid))
+   cat(pcatsAPIclientR::printgp(jobid))
 }
 
 #example 2 CATE
@@ -39,6 +39,6 @@ cat(paste0("JobID cate: ",jobidcate,"\n"))
 status <- pcatsAPIclientR::wait_for_result(jobidcate)
 
 if (status=="Done") {
-   cat(pcatsAPIclientR::print(jobidcate))
+   cat(pcatsAPIclientR::printgp(jobidcate))
 }
 
