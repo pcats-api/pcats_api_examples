@@ -1,9 +1,9 @@
 all:
 	@echo "make check  -- to run all examples"
 
-check: run_python_examples
+check: run_r_examples
 
-run_python_examples:
+run_r_examples:
 	R -s --no-restore --file=pcats_api_example_manuscript_1.R
 	R -s --no-restore --file=pcats_api_example_manuscript_1B.R
 	R -s --no-restore --file=pcats_api_example_manuscript_2.R
