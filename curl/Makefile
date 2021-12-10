@@ -1,9 +1,9 @@
 all:
 	@echo "make check  -- to run all examples"
 
-check: run_python_examples
+check: run_curl_examples
 
-run_python_examples:
+run_curl_examples:
 	./pcats_api_example_manuscript_1.sh
 	./pcats_api_example_manuscript_1B.sh
 	./pcats_api_example_manuscript_2.sh
