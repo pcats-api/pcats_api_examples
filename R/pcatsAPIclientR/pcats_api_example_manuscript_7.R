@@ -2,7 +2,7 @@ library(pcatsAPIclientR)
 
 #example 8
 
-jobid <- pcatsAPIclientR::staticGP(datafile="../../data/example8.csv",
+jobid <- pcatsAPIclientR::staticGP(datafile="../../data/example7.csv",
         outcome="Y",
         treatment="A",
         x.explanatory="X",
@@ -12,7 +12,7 @@ jobid <- pcatsAPIclientR::staticGP(datafile="../../data/example8.csv",
         outcome.type="Continuous",
         method="GP",
         tr.type="Discrete",
-        mi.datafile="../../data/example8_midata.csv")
+        mi.datafile="../../data/example7_midata.csv")
 
 cat(paste0("JobID: ",jobid,"\n"))
 
