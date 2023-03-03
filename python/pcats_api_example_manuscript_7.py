@@ -1,8 +1,8 @@
 import pcats_api_client as pcats_api
 
-#example 7
+#example 8
 
-jobid=pcats_api.staticgp(datafile="../data/example7.csv", 
+jobid=pcats_api.staticgp(datafile="../data/example7.csv",
         outcome="Y",
         treatment="A",
         x_explanatory="X",
@@ -10,11 +10,9 @@ jobid=pcats_api.staticgp(datafile="../data/example7.csv",
         burn_num=500,
         mcmc_num=500,
         outcome_type="Continuous",
+        tr_type="Discrete",
         method="GP",
-        outcome_censor_lv="lv",
-        outcome_censor_uv="uv",
-        outcome_bound_censor="censored",
-        outcome_censor_yn="censor")
+        mi_datafile="../data/example7_midata.csv")
 
 print("JobID: {}".format(jobid))
 
