@@ -43,3 +43,16 @@ status <- pcatsAPIclientR::job_status(jobid)
 if (status=="Done") {
     cat(pcatsAPIclientR::printgp(jobid))
 }
+
+# CATE
+jobidcate <- pcatsAPIclientR::staticGP.cate(jobid=jobid,
+                                            x="RF_pos",
+                                            control.tr="0,180",
+                                            treat.tr="1,180",
+                                            pr.values="5")
+
+status <- pcatsAPIclientR::wait_for_result(jobidcate)
+
+if (status=="Done") {
+  cat(pcatsAPIclientR::printgp(jobidcate))
+}
