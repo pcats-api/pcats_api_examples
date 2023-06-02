@@ -16,14 +16,14 @@ The R PCATS REST API abstraction library is available on github. In order to ins
 
 ```R
 install.packages("devtools")
-devtools::install_github("pcats-api/pcatsAPIclientR")
+devtools::install_github("pcats-api/pcatsAPIclientR",force=TRUE)
 ```
 
 The Python PCATS REST API abstraction library is also available on github. In order to install it please run:
 
-`python -m pip install pcats_api_client`
+`python -m pip install git+https://github.com/pcats-api/pcats_api_client_py.git`
 
-## Example
+## Simple Example
 ### Non-adaptive treatment
 This is a simple example of how to use the package to estimate ATE. The example data is simulated from
 
@@ -61,12 +61,12 @@ jobid <- pcatsAPIclientR::staticGP(datafile="example1.csv",
 #Step 2. Check the request status
 #Get the job id
 cat(paste0("JobID: ",jobid,"\n"))
-#> JobID: e2db813e-89a2-4a35-bfa3-d34b5b2b0d0d
+#JobID: e2db813e-89a2-4a35-bfa3-d34b5b2b0d0d
 
 #If the job has been successfully done, the function will return with status="Done"
 status <- pcatsAPIclientR::wait_for_result(jobid)
-#>$status
-[1] "Done"
+#$status
+#[1] "Done"
 
 #To retrieve a job status without waiting for the completion (i.e. polling), one may use the following code.
 status <- pcatsAPIclientR::job_status(jobid)
@@ -76,21 +76,21 @@ if (status=="Done") {
     cat(pcatsAPIclientR::print(jobid))
 }
 # The first table shows the estimated ATE with SD and the 95% confidence interval.
-#>Average treatment effect:
-#> Contrast Estimation    SD     LB     UB
-#>    0 - 1     -5.048 0.198 -5.415 -4.662
+# Average treatment effect:
+# Contrast Estimation    SD     LB     UB
+#    0 - 1     -5.048 0.198 -5.415 -4.662
 
 # The second table presents the estimated average potential outcomes by treatment groups. It reports that the expected mean and its standard error for the potential outcomes.
-#>Potential outcomes:
-#> A Estimation    SD     LB    UB
-#> 0     -0.122 0.089 -0.296 0.052
-#> 1      4.926 0.112  4.708 5.140
+# Potential outcomes:
+# A Estimation    SD     LB    UB
+# 0     -0.122 0.089 -0.296 0.052
+# 1      4.926 0.112  4.708 5.140
 
 # It’s the link of the histograms of MCMC posterior estimates of ATE
-#> Plot URL:  https://pcats.research.cchmc.org/api/job/e2db813e-89a2-4a35-bfa3-d34b5b2b0d0d/plot
+# Plot URL:  https://pcats.research.cchmc.org/api/job/e2db813e-89a2-4a35-bfa3-d34b5b2b0d0d/plot
  
-#It’s the link of the histograms of MCMC posterior estimates of the potential outcomes
-#> Plot Potential URL: https://pcats.research.cchmc.org/api/job/e2db813e-89a2-4a35-bfa3-d34b5b2b0d0d/plot/Potential
+# It’s the link of the histograms of MCMC posterior estimates of the potential outcomes
+# Plot Potential URL: https://pcats.research.cchmc.org/api/job/e2db813e-89a2-4a35-bfa3-d34b5b2b0d0d/plot/Potential
 ```
 
 ** Python code:**
@@ -164,39 +164,39 @@ if (status=="Done") {
   cat(pcatsAPIclientR::print(jobid))
 }
 # Stage 1 shows the results of the first time point
-#> Stage 1:
-#> Average treatment effect:
-#>  Contrast Estimation    SD     LB     UB
-#>     0 - 1     -0.435 0.149 -0.743 -0.162
+# Stage 1:
+# Average treatment effect:
+# Contrast Estimation    SD     LB     UB
+#    0 - 1     -0.435 0.149 -0.743 -0.162
 
-#> Potential outcomes:
-#>  A1 Estimation    SD     LB    UB
-#>   0      0.068 0.083 -0.106 0.220
-#>   1      0.502 0.070  0.365 0.637
+# Potential outcomes:
+# A1 Estimation    SD     LB    UB
+#  0      0.068 0.083 -0.106 0.220
+#  1      0.502 0.070  0.365 0.637
 
 # Stage 2 shows the results of the second time point
-#> Stage 2:
-#> Average treatment effect:
- #>    Contrast Estimation    SD     LB     UB
-#>  0, 0 - 0, 1     -3.787 0.468 -4.635 -2.821
-#>  0, 0 - 1, 0     -2.702 0.428 -3.494 -1.849
-#>  0, 0 - 1, 1     -6.893 0.421 -7.640 -6.075
-#>  0, 1 - 1, 0      1.085 0.523  0.127  2.064
-#>  0, 1 - 1, 1     -3.106 0.472 -3.985 -2.153
-#>  1, 0 - 1, 1     -4.191 0.427 -4.976 -3.290
+# Stage 2:
+# Average treatment effect:
+#    Contrast Estimation    SD     LB     UB
+# 0, 0 - 0, 1     -3.787 0.468 -4.635 -2.821
+# 0, 0 - 1, 0     -2.702 0.428 -3.494 -1.849
+# 0, 0 - 1, 1     -6.893 0.421 -7.640 -6.075
+# 0, 1 - 1, 0      1.085 0.523  0.127  2.064
+# 0, 1 - 1, 1     -3.106 0.472 -3.985 -2.153
+# 1, 0 - 1, 1     -4.191 0.427 -4.976 -3.290
 
-#> Potential outcomes:
-#>  A1 A2 Estimation    SD     LB     UB
-#>   0  0     -2.426 0.279 -2.915 -1.826
-#>   0  1      1.360 0.358  0.625  2.035
-#>   1  0      0.276 0.285 -0.323  0.795
-#>   1  1      4.467 0.228  4.043  4.937
+# Potential outcomes:
+# A1 A2 Estimation    SD     LB     UB
+#  0  0     -2.426 0.279 -2.915 -1.826
+#  0  1      1.360 0.358  0.625  2.035
+#  1  0      0.276 0.285 -0.323  0.795
+#  1  1      4.467 0.228  4.043  4.937
 
 # It’s the link of the histograms of MCMC posterior estimates of ATE
-#> Plot URL:  https://pcats.research.cchmc.org/api/job/3bf0e733-a381-4525-9a5a-5c8552b634e2/plot
+# Plot URL:  https://pcats.research.cchmc.org/api/job/3bf0e733-a381-4525-9a5a-5c8552b634e2/plot
 
-#It’s the link of the histograms of MCMC posterior estimates of the potential outcomes
-#> Plot Potential URL: https://pcats.research.cchmc.org/api/job/3bf0e733-a381-4525-9a5a-5c8552b634e2/plot/Potential
+# It’s the link of the histograms of MCMC posterior estimates of the potential outcomes
+# Plot Potential URL: https://pcats.research.cchmc.org/api/job/3bf0e733-a381-4525-9a5a-5c8552b634e2/plot/Potential
 ```
 
 **Python code:**
