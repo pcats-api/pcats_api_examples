@@ -19,7 +19,7 @@ jobid <- pcatsAPIclientR::dynamicGP(datafile="../../data/example3.csv",
                                     mcmc.num=500,
                                     stg1.tr.type="Discrete",
                                     stg2.tr.type="Discrete",
-                                    method="GP")
+                                    method="BART")
 
 cat(paste0("JobID: ",jobid,"\n"))
 
