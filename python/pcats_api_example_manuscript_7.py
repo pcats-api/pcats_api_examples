@@ -5,6 +5,7 @@ import pcats_api_client as pcats_api
 jobid=pcats_api.staticgp(datafile="../data/example7.csv",
         outcome="Y",
         treatment="A",
+        time="Time",
         x_explanatory="X",
         x_confounding="X",
         burn_num=500,
