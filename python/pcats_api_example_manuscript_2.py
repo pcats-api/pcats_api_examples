@@ -34,7 +34,7 @@ jobid_cate=pcats_api.staticgp_cate(jobid=jobid,
         x="Gender",
         control_tr="0,0",
         treat_tr="1,0",
-        pr_values="0")
+        c_margin="0")
 
 print("CATE JobID: {}".format(jobid_cate))
 
