@@ -5,6 +5,7 @@ import pcats_api_client as pcats_api
 jobid=pcats_api.staticgp(datafile="../data/example1.csv", 
         outcome="Y",
         treatment="A",
+        time="Time",
         x_explanatory="X",
         x_confounding="X",
         burn_num=500,
@@ -12,7 +13,7 @@ jobid=pcats_api.staticgp(datafile="../data/example1.csv",
         outcome_type="Continuous",
         method="GP",
         tr_type="Discrete",
-        pr_values="0,1,2")
+        c_margin="0,1,2")
 
 print("JobID: {}".format(jobid))
 
