@@ -10,8 +10,6 @@ jobid <- pcatsAPIclientR::staticGP(datafile="../../data/example2.csv",
                                    x.confounding="X,Z",
                                    tr.hte="Gender,Z",
                                    tr.type="Discrete",
-                                   tr2.values="-1,0,1",
-                                   tr2.type="Continuous",
                                    burn.num=500,
                                    mcmc.num=500,
                                    outcome.type="Continuous",
@@ -30,8 +28,8 @@ if (status=="Done") {
 
 jobidcate <- pcatsAPIclientR::staticGP.cate(jobid=jobid,
         x="Gender",
-        control.tr="0,0",
-        treat.tr="1,0",
+        control.tr="1",
+        treat.tr="0",
         c.margin="0")
 
 cat(paste0("JobID cate: ",jobidcate,"\n"))
