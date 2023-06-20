@@ -7,11 +7,9 @@ jobid=pcats_api.staticgp(datafile="../data/example2.csv",
         treatment="A",
         time="Time",
         x_explanatory="X,Z",
-        x_confounding="X,Z",
+        x_confounding="X",
         tr_hte="Gender,Z",
-        tr2_values="-1,0,1",
         tr_type="Discrete",
-        tr2_type="Continuous",
         burn_num=500,
         mcmc_num=500,
         outcome_type="Continuous",
@@ -32,8 +30,8 @@ else:
 
 jobid_cate=pcats_api.staticgp_cate(jobid=jobid,
         x="Gender",
-        control_tr="0,0",
-        treat_tr="1,0",
+        control_tr="1",
+        treat_tr="0",
         c_margin="0")
 
 print("CATE JobID: {}".format(jobid_cate))
