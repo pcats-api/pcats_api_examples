@@ -14,14 +14,17 @@ with open("example1_midata.csv", 'wb') as f:
 #Step 1: submit a request
 jobid=pcats_api.staticgp(datafile="example1.csv", 
         outcome="Jadas6",
-        treatment="treatment_group,diffvisit",
+        treatment="treatment_group",
         #specify the prognostic variables W
         x_explanatory="age,Female,chaq_score,RF_pos,private,Jadas0,timediag",
         #specify the confounders V
         x_confounding="age,Jadas0,chaq_score,timediag",
         #add the term if you think the treatment effect is dfferent in RF_pos group
         tr_hte="RF_pos",
-        tr2_values=180,
+        #specify the time variable,
+        time="diffvisit",
+        #specify the time value used to calculate the ATE
+        time_value=180,
         burn_num=500,
         mcmc_num=500,
         #specify the type of outcome
@@ -29,13 +32,12 @@ jobid=pcats_api.staticgp(datafile="example1.csv",
         method="GP",
         #specify the type of treatment
         tr_type="Discrete",
-        tr2_type = "Continuous",
         outcome_lb=0,
         outcome_ub=40,
         outcome_bound_censor="bounded",
         x_categorical="Female,RF_pos,private",
         #specify the value c used to calculate PrTE
-        pr_values="5",
+        c_margin="0,1",
         mi_datafile="example1_midata.csv")
 
 #retrieve the job id
@@ -55,9 +57,9 @@ else:
 
 jobid_cate=pcats_api.staticgp_cate(jobid=jobid,
         x="RF_pos",
-        control_tr="0,180",
-        treat_tr="1,180",
-        pr_values="5")
+        control_tr="1",
+        treat_tr="0",
+        c_margin="0,1")
 
 print("CATE JobID: {}".format(jobid_cate))
 
