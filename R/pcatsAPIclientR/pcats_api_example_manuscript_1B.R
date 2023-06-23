@@ -12,7 +12,7 @@ jobid <- pcatsAPIclientR::staticGP(datafile="../../data/example1.csv",
                                    outcome.type="Continuous",
                                    method="BART",
                                    tr.type="Discrete",
-                                   c.margin="0,1,2")
+                                   c.margin="0")
 
 cat(paste0("JobID: ",jobid,"\n"))
 
