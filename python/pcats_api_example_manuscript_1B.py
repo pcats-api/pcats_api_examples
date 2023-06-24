@@ -13,7 +13,7 @@ jobid=pcats_api.staticgp(datafile="../data/example1.csv",
         outcome_type="Continuous",
         method="BART",
         tr_type="Discrete",
-        c_margin="0,1,2")
+        c_margin="0")
 
 print("JobID: {}".format(jobid))
 
