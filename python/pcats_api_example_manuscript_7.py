@@ -1,6 +1,6 @@
 import pcats_api_client as pcats_api
 
-#example 8
+#example 7
 
 jobid=pcats_api.staticgp(datafile="../data/example7.csv",
         outcome="Y",
