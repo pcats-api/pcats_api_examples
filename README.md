@@ -50,6 +50,7 @@ download.file("https://github.com/pcats-api/pcats_api_examples/raw/main/data/exa
 #Step 1. Submit the actual request
 jobid <- pcatsAPIclientR::staticGP(datafile="example1.csv",
                       outcome="Y",
+                      time="Time",
                       outcome.type="Continuous",
                       treatment="A", 
                       tr.type="Discrete",
@@ -77,8 +78,8 @@ if (status=="Done") {
 }
 # The first table shows the estimated ATE with SD and the 95% confidence interval.
 # Average treatment effect:
-# Contrast Estimation    SD     LB     UB
-#    0 - 1     -5.048 0.198 -5.415 -4.662
+#   Contrast Estimation    SD     LB     UB
+#  A=0 - A=1     -5.048 0.198 -5.415 -4.662
 
 # The second table presents the estimated average potential outcomes by treatment groups. It reports that the expected mean and its standard error for the potential outcomes.
 # Potential outcomes:
@@ -106,6 +107,7 @@ with open("example1.csv", 'wb') as f:
 jobid=pcats_api.staticgp(datafile="example1.csv",
                       outcome='Y',
                       treatment='A',
+                      time="Time",   
                       x_explanatory='X',
                       x_confounding='X',
                       burn_num=500,
@@ -144,11 +146,13 @@ jobid <- pcatsAPIclientR::dynamicGP(
             datafile='example3.csv',
             stg1.outcome='L1',
             stg1.treatment='A1',
+            stg1.time="Time1",
             stg1.x.explanatory='X',
             stg1.x.confounding='X',
             stg1.outcome.type='Continuous',
             stg2.outcome='Y',
             stg2.treatment='A2',
+            stg2.time="Time2",
             stg2.x.explanatory='X,L1',
             stg2.x.confounding='X,L1',
             stg2.outcome.type='Continuous',
@@ -162,34 +166,32 @@ status <- pcatsAPIclientR::wait_for_result(jobid)
 if (status=="Done") {
   cat(pcatsAPIclientR::printgp(jobid))
 }
-# Stage 1 shows the results of the first time point
 # Stage 1:
 # Average treatment effect:
-# Contrast Estimation    SD     LB     UB
-#    0 - 1     -0.435 0.149 -0.743 -0.162
+#     Contrast Estimation    SD     LB     UB
+#  A1=0 - A1=1     -0.435 0.149 -0.743 -0.162
 
 # Potential outcomes:
-# A1 Estimation    SD     LB    UB
-#  0      0.068 0.083 -0.106 0.220
-#  1      0.502 0.070  0.365 0.637
-
-# Stage 2 shows the results of the second time point
+#  A1 Estimation    SD     LB    UB
+#   0      0.068 0.083 -0.106 0.220
+#   1      0.502 0.070  0.365 0.637
+# 
 # Stage 2:
 # Average treatment effect:
-#    Contrast Estimation    SD     LB     UB
-# 0, 0 - 0, 1     -3.787 0.468 -4.635 -2.821
-# 0, 0 - 1, 0     -2.702 0.428 -3.494 -1.849
-# 0, 0 - 1, 1     -6.893 0.421 -7.640 -6.075
-# 0, 1 - 1, 0      1.085 0.523  0.127  2.064
-# 0, 1 - 1, 1     -3.106 0.472 -3.985 -2.153
-# 1, 0 - 1, 1     -4.191 0.427 -4.976 -3.290
-
+#                   Contrast Estimation    SD     LB     UB
+#  A1=1 & A2=1 - A1=0 & A2=1      3.106 0.472  2.153  3.985
+#  A1=1 & A2=1 - A1=0 & A2=0      6.893 0.421  6.075  7.640
+#  A1=1 & A2=1 - A1=1 & A2=0      4.191 0.427  3.290  4.976
+#  A1=0 & A2=1 - A1=0 & A2=0      3.787 0.468  2.821  4.635
+#  A1=0 & A2=1 - A1=1 & A2=0      1.085 0.523  0.127  2.064
+#  A1=0 & A2=0 - A1=1 & A2=0     -2.702 0.428 -3.494 -1.849
+# 
 # Potential outcomes:
-# A1 A2 Estimation    SD     LB     UB
-#  0  0     -2.426 0.279 -2.915 -1.826
-#  0  1      1.360 0.358  0.625  2.035
-#  1  0      0.276 0.285 -0.323  0.795
-#  1  1      4.467 0.228  4.043  4.937
+#  A1 A2 Estimation    SD     LB     UB
+#   1  1      4.467 0.228  4.043  4.937
+#   0  1      1.360 0.358  0.625  2.035
+#   0  0     -2.426 0.279 -2.915 -1.826
+#   1  0      0.276 0.285 -0.323  0.795
 
 # It’s the link of the histograms of MCMC posterior estimates of ATE
 # Plot URL:  https://pcats.research.cchmc.org/api/job/3bf0e733-a381-4525-9a5a-5c8552b634e2/plot
@@ -211,11 +213,13 @@ with open("example3.csv", 'wb') as f:
 jobid=pcats_api.dynamicgp(datafile="example3.csv", 
                       stg1_outcome='L1',
                       stg1_treatment='A1',
+                      stg1_time="Time1",
                       stg1_x_explanatory='X',
                       stg1_x_confounding='X',
                       stg1_outcome_type='Continuous',
                       stg2_outcome='Y',
                       stg2_treatment='A2',
+                      stg2_time="Time2",    
                       stg2_x_explanatory='X,L1',
                       stg2_x_confounding='X,L1',
                       stg2_outcome_type='Continuous',
@@ -241,44 +245,54 @@ The R code and Python code are shown below:
 download.file("https://github.com/pcats-api/pcats_api_examples/raw/main/casedata/example1.csv", destfile="example1.csv")
 download.file("https://github.com/pcats-api/pcats_api_examples/raw/main/casedata/example1_midata.csv", destfile="example1_midata.csv")
 
+#Step 1: submit a request 
 jobid <- pcatsAPIclientR::staticGP(datafile="example1.csv",
                                    outcome="Jadas6",
-                                   treatment="treatment_group,diffvisit", 
+                                   treatment="treatment_group", 
                                    #specify the prognostic variables W
                                    x.explanatory="age,Female,chaq_score,RF_pos,private
                                                  ,Jadas0,timediag",
                                    #specify the confounders V
                                    x.confounding="age,Jadas0,chaq_score,timediag",
                             #add the term if you think the treatment effect is dfferent in RF_pos group
-                                   tr.hte="RF_pos",            
-                                   tr2.values=180,
+                                   tr.hte="RF_pos",   
+                                   #specify the time variable,
+                                   time="diffvisit",
+                                   #specify the time value used to calculate the ATE
+                                   time.value=180,
                                    burn.num=500, mcmc.num=500,
                                    #specify the type of outcome
                                    outcome.type="Continuous",
                                    method="GP",
                                    #specify the type of treatment
                                    tr.type="Discrete",
-                                   tr2.type = "Continuous",
                                    outcome.lb=0,
                                    outcome.ub=40,
                                    outcome.bound_censor="bounded",
                                    x.categorical="Female,RF_pos,private",
                                    #specify the value c used to calculate PrTE
-                                   pr.values="5",
+                                   c.margin="0,1",
                                    mi.datafile="example1_midata.csv")
+#retrieve the job id
+cat(paste0("JobID: ",jobid,"\n"))
 
+#Step 2: check the request status using the job id
+#If the job completed successfully, the function will return "Done".
 status <- pcatsAPIclientR::wait_for_result(jobid)
 
+#To retrieve a job status without waiting for the completion,  one may use the following code.
+status <- pcatsAPIclientR::job_status(jobid)
+
+#Step 3: print the results
 if (status=="Done") {
     cat(pcatsAPIclientR::printgp(jobid))
 }
-
 # CATE
 jobidcate <- pcatsAPIclientR::staticGP.cate(jobid=jobid,
                                             x="RF_pos",
-                                            control.tr="0,180",
-                                            treat.tr="1,180",
-                                            pr.values="5")
+                                            control.tr="1",
+                                            treat.tr="0",
+                                            c.margin="0,1")
 
 status <- pcatsAPIclientR::wait_for_result(jobidcate)
 
@@ -286,114 +300,49 @@ if (status=="Done") {
   cat(pcatsAPIclientR::printgp(jobidcate))
 }
 
-# Average treatment effect:
-#  Imputation        Contrast Estimation    SD     LB    UB
-#           1 0, 180 - 1, 180      3.829 2.092  0.217 8.293
-#           2 0, 180 - 1, 180      3.793 2.051 -0.196 7.520
-#           3 0, 180 - 1, 180      3.832 2.061  0.384 8.442
-#           4 0, 180 - 1, 180      3.817 2.051 -0.220 7.897
-#           5 0, 180 - 1, 180      3.826 2.081 -0.247 7.717
-#    Combined 0, 180 - 1, 180      3.819 2.066 -0.230 7.824
-
-# Potential outcomes:
-#  Imputation treatment_group diffvisit Estimation    SD    LB     UB
-#           1               0       180      8.381 0.844 6.868  9.981
-#           2               0       180      8.354 0.829 6.903 10.089
-#           3               0       180      8.384 0.842 6.720  9.921
-#           4               0       180      8.335 0.830 6.819  9.943
-#           5               0       180      8.376 0.842 6.763 10.000
-#           1               1       180      4.552 1.516 1.764  7.880
-#           2               1       180      4.561 1.499 1.956  7.856
-#           3               1       180      4.552 1.500 1.602  7.614
-#           4               1       180      4.518 1.495 1.751  7.576
-#           5               1       180      4.549 1.532 1.829  7.874
-#    Combined               0       180      8.366 0.837 6.798 10.011
-#    Combined               1       180      4.547 1.507 1.825  7.861
- 
-# Average treatment effect for for Pr(Y>c):
-#  Imputation        Contrast      Pr Estimation    SD     LB    UB
-#           1 0, 180 - 1, 180 Pr(Y>5)      0.254 0.148 -0.071 0.500
-#           2 0, 180 - 1, 180 Pr(Y>5)      0.251 0.143  0.000 0.551
-#           3 0, 180 - 1, 180 Pr(Y>5)      0.253 0.149 -0.041 0.531
-#           4 0, 180 - 1, 180 Pr(Y>5)      0.253 0.146 -0.020 0.551
-#           5 0, 180 - 1, 180 Pr(Y>5)      0.253 0.149 -0.020 0.531
-#    Combined 0, 180 - 1, 180 Pr(Y>5)      0.253 0.147 -0.061 0.510
-
-# Potential outcomes for for Pr(Y>c):
-#  Imputation treatment_group diffvisit      Pr Estimation    SD    LB    UB
-#           1               0       180 Pr(Y>5)      0.696 0.060 0.561 0.796
-#           2               0       180 Pr(Y>5)      0.695 0.059 0.571 0.806
-#           3               0       180 Pr(Y>5)      0.696 0.062 0.582 0.816
-#           4               0       180 Pr(Y>5)      0.693 0.060 0.582 0.796
-#           5               0       180 Pr(Y>5)      0.697 0.060 0.571 0.796
-#           1               1       180 Pr(Y>5)      0.442 0.119 0.255 0.724
-#           2               1       180 Pr(Y>5)      0.445 0.116 0.204 0.653
-#           3               1       180 Pr(Y>5)      0.443 0.119 0.214 0.673
-#           4               1       180 Pr(Y>5)      0.440 0.117 0.204 0.653
-#           5               1       180 Pr(Y>5)      0.444 0.120 0.224 0.673
-#    Combined               0       180 Pr(Y>5)      0.696 0.060 0.561 0.796
-#    Combined               1       180 Pr(Y>5)      0.443 0.118 0.194 0.663
-
+# Average treatment effect (t*=180):
+#  Imputation                              Contrast Estimation    SD     LB    UB PrTE(c=0) PrTE(c=1)
+#           1 treatment_group=0 - treatment_group=1      3.436 2.219 -0.463 7.724     0.952     0.858
+#           2 treatment_group=0 - treatment_group=1      3.399 2.223 -0.706 7.599     0.936     0.864
+#           3 treatment_group=0 - treatment_group=1      3.460 2.184 -0.355 7.734     0.948     0.850
+#           4 treatment_group=0 - treatment_group=1      3.435 2.200 -0.320 7.774     0.944     0.860
+#           5 treatment_group=0 - treatment_group=1      3.453 2.250 -0.678 7.604     0.944     0.846
+#    Combined treatment_group=0 - treatment_group=1      3.436 2.214 -0.402 7.824     0.945     0.856
+# 
+# Potential outcomes (t*=180):
+#  Imputation treatment_group Estimation    SD    LB    UB
+#           1               0      8.055 0.967 6.205 9.804
+#           2               0      8.026 0.973 6.292 9.844
+#           3               0      8.059 0.956 6.105 9.721
+#           4               0      8.011 0.949 6.217 9.893
+#           5               0      8.065 0.968 6.199 9.819
+#           1               1      4.619 1.579 1.330 7.300
+#           2               1      4.627 1.561 1.914 7.883
+#           3               1      4.599 1.561 1.765 7.537
+#           4               1      4.576 1.585 1.815 7.472
+#           5               1      4.612 1.589 1.582 7.481
+#    Combined               0      8.043 0.962 6.165 9.819
+#    Combined               1      4.607 1.574 1.527 7.431
+#    
 # Plot URL: https://pcats.research.cchmc.org/api/job/297c4123-d503-4b24-9f58-abfe08ca4f14/plot
-
-# Plot Potential URL: https://pcats.research.cchmc.org/api/job/297c4123-d503-4b24-9f58-abfe08ca4f14/plot/Potential
-
-# Conditional average treatment effect:
-#                                                              Constrast
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  Imputation RF_pos Estimation    SD      LB    UB
-#           1      0     -2.969 2.282  -7.200 1.831
-#           2      0     -2.924 2.244  -7.470 1.442
-#           3      0     -2.970 2.258  -7.454 1.334
-#           4      0     -2.944 2.227  -6.978 1.711
-#           5      0     -2.948 2.271  -7.227 1.578
-#           1      1     -8.587 5.028 -19.650 0.315
-#           2      1     -8.598 5.074 -17.496 2.146
-#           3      1     -8.605 5.136 -18.856 0.993
-#           4      1     -8.645 5.193 -19.028 0.373
-#           5      1     -8.690 5.048 -18.141 1.341
-#    Combined      0     -2.951 2.255  -7.175 1.767
-#    Combined      1     -8.625 5.092 -19.112 0.941
-
-# Conditional average treatment effect for Pr(Y>c):
-#                                                              Constrast
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  treatment_group=1 & diffvisit=180 - treatment_group=0 & diffvisit=180
-#  Imputation      Pr RF_pos Estimation    SD     LB     UB
-#           1 Pr(Y>5)      0     -0.217 0.168 -0.530  0.108
-#           2 Pr(Y>5)      0     -0.213 0.165 -0.554  0.084
-#           3 Pr(Y>5)      0     -0.216 0.170 -0.530  0.120
-#           4 Pr(Y>5)      0     -0.215 0.167 -0.542  0.120
-#           5 Pr(Y>5)      0     -0.216 0.170 -0.542  0.084
-#           1 Pr(Y>5)      1     -0.462 0.250 -0.933  0.000
-#           2 Pr(Y>5)      1     -0.461 0.246 -0.933  0.000
-#           3 Pr(Y>5)      1     -0.454 0.253 -0.867  0.000
-#           4 Pr(Y>5)      1     -0.464 0.247 -0.933 -0.067
-#           5 Pr(Y>5)      1     -0.454 0.240 -0.800  0.067
-#    Combined Pr(Y>5)      0     -0.215 0.168 -0.530  0.120
-#    Combined Pr(Y>5)      1     -0.459 0.247 -0.867  0.000
-
+# 
+# Plot Potential URL: https://pcats.research.cchmc.org/api/job/297c4123-d503-4b24-9f58-abfe08ca4f14
+# 
+# Conditional average treatment effect (t*=180):
+#  Constrast Imputation RF_pos Estimation    SD     LB     UB PrCTE(c=0) PrCTE(c=1)
+#      0 - 1          1      0      2.676 2.418 -1.493  7.376      0.852      0.750
+#      0 - 1          2      0      2.622 2.427 -1.969  7.080      0.838      0.718
+#      0 - 1          3      0      2.698 2.402 -2.077  6.931      0.856      0.746
+#      0 - 1          4      0      2.655 2.379 -1.487  7.301      0.862      0.744
+#      0 - 1          5      0      2.663 2.444 -1.258  7.930      0.852      0.744
+#      0 - 1          1      1      7.642 5.249 -1.852 18.092      0.932      0.896
+#      0 - 1          2      1      7.694 5.230 -1.512 18.540      0.930      0.902
+#      0 - 1          3      1      7.674 5.196 -2.332 17.808      0.934      0.914
+#      0 - 1          4      1      7.749 5.331 -2.727 17.608      0.926      0.898
+#      0 - 1          5      1      7.823 5.230 -1.417 18.058      0.942      0.910
+#      0 - 1   Combined      0      2.663 2.412 -1.669  7.389      0.852      0.740
+#      0 - 1   Combined      1      7.716 5.244 -1.870 18.196      0.933      0.904
+# 
 # Plot URL: https://pcats.research.cchmc.org/api/job/a2177819-91d1-4673-bda9-7ff2fd7ad42e/plot
 ```
 
@@ -412,16 +361,20 @@ r = requests.get("https://github.com/pcats-api/pcats_api_examples/raw/main/cased
 with open("example1_midata.csv", 'wb') as f:
     f.write(r.content)
 
+#Step 1: submit a request
 jobid=pcats_api.staticgp(datafile="example1.csv", 
         outcome="Jadas6",
-        treatment="treatment_group,diffvisit",
+        treatment="treatment_group",
         #specify the prognostic variables W
         x_explanatory="age,Female,chaq_score,RF_pos,private,Jadas0,timediag",
         #specify the confounders V
         x_confounding="age,Jadas0,chaq_score,timediag",
         #add the term if you think the treatment effect is dfferent in RF_pos group
         tr_hte="RF_pos",
-        tr2_values=180,
+        #specify the time variable,
+        time="diffvisit",
+        #specify the time value used to calculate the ATE
+        time_value=180,
         burn_num=500,
         mcmc_num=500,
         #specify the type of outcome
@@ -429,17 +382,22 @@ jobid=pcats_api.staticgp(datafile="example1.csv",
         method="GP",
         #specify the type of treatment
         tr_type="Discrete",
-        tr2_type = "Continuous",
         outcome_lb=0,
         outcome_ub=40,
         outcome_bound_censor="bounded",
         x_categorical="Female,RF_pos,private",
         #specify the value c used to calculate PrTE
-        pr_values="5",
+        c_margin="0,1",
         mi_datafile="example1_midata.csv")
 
+#retrieve the job id
+print("JobID: {}".format(jobid))
+
+#Step 2: check the request status using the job id
+#If the job completed successfully, the function will return "Done".
 status=pcats_api.wait_for_result(jobid)
 
+#Step 3: print the results
 if status=="Done":
     print(pcats_api.printgp(jobid))
 else:
@@ -449,9 +407,9 @@ else:
 
 jobid_cate=pcats_api.staticgp_cate(jobid=jobid,
         x="RF_pos",
-        control_tr="0",
-        treat_tr="1",
-        pr_values="5")
+        control_tr="1",
+        treat_tr="0",
+        c_margin="0,1")
 
 print("CATE JobID: {}".format(jobid_cate))
 
@@ -472,30 +430,28 @@ The R code and Python code are shown below:
 ```R
 download.file("https://github.com/pcats-api/pcats_api_examples/raw/main/casedata/example2.csv", destfile="example2.csv")
 
-download.file("https://github.com/pcats-api/pcats_api_examples/raw/main/casedata/example2_midata.csv", destfile="example2_midata.csv")
-
 jobid <- pcatsAPIclientR::dynamicGP(datafile="example2.csv",
-                                    #stage 1
                                     stg1.outcome='BMI1',
                                     stg1.treatment='A0',
-                                    stg1.x.explanatory="MET,Gender,BMI0,AGE,Obesity,time1",
-                                    stg1.x.confounding="BMI0,AGE,time1",
+                                    stg1.x.explanatory="MET,Gender,BMI0,AGE,Obesity",
+                                    stg1.x.confounding="BMI0,AGE",
                                     stg1.outcome.type='Continuous',
-                                    stg1.tr.type = 'Discrete',
-                                    #stage 2
+                                    stg1.time = "time1",
+                                    stg1.time.value = 90,                                    
                                     stg2.outcome='BMI2',
                                     stg2.treatment='A1',
-                                    stg2.x.explanatory="MET,Gender,BMI0,AGE,Obesity,time1
-                                                       ,time2,BMI1",
-                                    stg2.x.confounding="BMI0,AGE,time1,time2,BMI1", 
+                                    stg2.x.explanatory="MET,Gender,BMI0,AGE,Obesity,BMI1",
+                                    stg2.x.confounding="BMI0,AGE,BMI1", 
                                     stg2.tr2.hte="BMI1",
                                     stg2.outcome.type='Continuous',
-                                    stg2.tr.type = 'Discrete',
+                                    stg2.time = "time2",
+                                    stg2.time.value = 180,                                      
                                     burn.num=500,
-                                    mcmc.num=500,   
+                                    mcmc.num=500,
+                                    stg1.tr.type = 'Discrete',
+                                    stg2.tr.type = 'Discrete',
                                     method='BART',
-                                    x.categorical="MET,Gender,Obesity",
-                                    mi.datafile="example2_midata.csv")
+                                    x.categorical="MET,Gender,Obesity")
 
 cat(paste0("JobID: ",jobid,"\n"))
 
@@ -506,37 +462,35 @@ if (status=="Done") {
 }
 
 # Stage 1:
-# Average treatment effect:
-#  Imputation Contrast Estimation    SD    LB    UB
-#           1    0 - 1      0.962 0.209 0.564 1.345
-
-# Potential outcomes:
-#  Imputation A0 Estimation    SD     LB     UB
-#           1  0     29.521 0.435 28.672 30.105
-#           1  1     28.559 0.380 27.785 29.132
-
+# Average treatment effect (t*=90):
+#     Contrast Estimation    SD    LB    UB
+#  A0=0 - A0=1      0.728 0.215 0.376 1.187
+# 
+# Potential outcomes (t*=90):
+#  A0 Estimation    SD     LB     UB
+#   0     29.690 0.155 29.381 29.963
+#   1     28.962 0.195 28.575 29.298
+# 
 # Stage 2:
-# Average treatment effect:
-#  Imputation    Contrast Estimation    SD     LB     UB
-#           1 0, 0 - 0, 1      3.502 0.267  3.015  4.071
-#           1 0, 0 - 1, 0      2.115 0.301  1.529  2.701
-#           1 0, 0 - 1, 1      5.585 0.257  5.071  6.088
-#           1 0, 1 - 1, 0     -1.387 0.370 -2.151 -0.688
-#           1 0, 1 - 1, 1      2.083 0.313  1.439  2.663
-#           1 1, 0 - 1, 1      3.470 0.197  3.053  3.857
-
-# Potential outcomes:
-#  Imputation A0 A1 Estimation    SD     LB     UB
-#           1  0  0     32.981 0.211 32.531 33.358
-#           1  0  1     29.479 0.258 28.971 29.974
-#           1  1  0     30.866 0.306 30.277 31.487
-#           1  1  1     27.396 0.253 26.904 27.885
-
+# Average treatment effect (t_1*=90 & t_2*=180):
+#                   Contrast Estimation    SD     LB     UB
+#  A0=0 & A1=0 - A0=0 & A1=1      3.130 0.475  2.205  3.771
+#  A0=0 & A1=0 - A0=1 & A1=1      5.383 0.250  4.887  5.877
+#  A0=0 & A1=0 - A0=1 & A1=0      1.642 0.454  0.774  2.393
+#  A0=0 & A1=1 - A0=1 & A1=1      2.253 0.506  1.399  3.223
+#  A0=0 & A1=1 - A0=1 & A1=0     -1.488 0.331 -2.180 -0.876
+#  A0=1 & A1=1 - A0=1 & A1=0     -3.741 0.405 -4.571 -3.152
+# 
+# Potential outcomes (t_1*=90 & t_2*=180):
+#  A0 A1 Estimation    SD     LB     UB
+#   0  0     33.051 0.170 32.701 33.364
+#   0  1     29.921 0.437 29.289 30.738
+#   1  1     27.668 0.255 27.171 28.192
+#   1  0     31.409 0.421 30.702 32.170
+#   
 # Plot URL: https://pcats.research.cchmc.org/api/job/7f31db9c-bd2c-4b55-8c18-4ea5baa3c396/plot
-
+# 
 # Plot Potential URL: https://pcats.research.cchmc.org/api/job/7f31db9c-bd2c-4b55-8c18-4ea5baa3c396/plot/Potential
-
-# Plot URL: https://pcats.research.cchmc.org/api/job/a2177819-91d1-4673-bda9-7ff2fd7ad42e/plot
 ```
 
 **Python code:**
@@ -557,22 +511,25 @@ with open("example2_midata.csv", 'wb') as f:
 jobid=pcats_api.dynamicgp(datafile="example2.csv", 
         stg1_outcome="BMI1",
         stg1_treatment="A0",
-        stg1_x_explanatory="MET,Gender,BMI0,AGE,Obesity,time1",
-        stg1_x_confounding="BMI0,AGE,time1",
+        stg1_x_explanatory="MET,Gender,BMI0,AGE,Obesity",
+        stg1_x_confounding="BMI0,AGE",
         stg1_outcome_type="Continuous",
+        stg1_time = "time1",
+        stg1_time_value = 90, 
         stg2_outcome="BMI2",
         stg2_treatment="A1",
-        stg2_x_explanatory="MET,Gender,BMI0,AGE,Obesity,time1,time2,BMI1",
-        stg2_x_confounding="BMI0,AGE,time1,time2,BMI1",
+        stg2_x_explanatory="MET,Gender,BMI0,AGE,Obesity,BMI1",
+        stg2_x_confounding="BMI0,AGE,BMI1",
         stg2_tr2_hte="BMI1",
-        stg2_outcome_type="Continuous", 
+        stg2_outcome_type="Continuous",
+        stg2_time = "time2",
+        stg2_time_value = 180,         
         burn_num=500,
         mcmc_num=500,
         stg1_tr_type="Discrete",
         stg2_tr_type="Discrete",
         method="BART",
-        x_categorical="MET,Gender,Obesity",
-        mi_datafile="example2_midata.csv")
+        x_categorical="MET,Gender,Obesity")
 
 print("JobID: {}".format(jobid))
 
